@@ -23,6 +23,16 @@ func main() {
 	e.GET("/show", show)
 	e.POST("/save", save)
 
+	e.POST("/users", func(c echo.Context) error {
+		u := new(User)
+		if err := c.Bind(u); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusCreated, u)
+	})
+
+	e.Static("/static", "static")
+
 	e.Logger.Debug(e.Start(":1323"))
 }
 
@@ -70,4 +80,9 @@ func save(c echo.Context) error {
 	}
 
 	return c.HTML(http.StatusOK, "<b>Thank you! "+name+"</b>")
+}
+
+type User struct {
+	Name  string `json:"name" xml:"name" form:"name" query:"name"`
+	Email string `json:"email" xml:"email" form:"email" query:"email"`
 }
