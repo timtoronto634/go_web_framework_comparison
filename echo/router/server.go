@@ -1,9 +1,10 @@
 package router
 
 import (
-	"io"
 	"net/http"
-	"os"
+	"timtoronto634/go_web_framework_comparison/echo/handler"
+
+	"timtoronto634/go_web_framework_comparison/echo/entity"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,15 +17,15 @@ func Server() *echo.Echo {
 
 	// users
 	// e.POST("/users", saveUser)
-	e.GET("/users/:id", getUser)
+	e.GET("/users/:id", handler.GetUser)
 	// e.PUT("/users/:id", updateUser)
 	// e.DELETE("/users/:id", deleteUser)
 
-	e.GET("/show", show)
-	e.POST("/save", save)
+	e.GET("/show", handler.Show)
+	e.POST("/save", handler.Save)
 
 	e.POST("/users", func(c echo.Context) error {
-		u := new(User)
+		u := new(entity.User)
 		if err := c.Bind(u); err != nil {
 			return err
 		}
@@ -34,55 +35,4 @@ func Server() *echo.Echo {
 	e.Static("/static", "static")
 
 	return e
-}
-
-// e.GET("/users/:id", getUser)
-func getUser(c echo.Context) error {
-	// User ID from path `users/:id`
-	id := c.Param("id")
-	return c.String(http.StatusOK, id)
-}
-
-// e.GET("/show", show)
-func show(c echo.Context) error {
-	// Get team and member from the query string
-	team := c.QueryParam("team")
-	member := c.QueryParam("member")
-	return c.String(http.StatusOK, "team:"+team+", member:"+member)
-}
-
-func save(c echo.Context) error {
-	// Get name
-	name := c.FormValue("name")
-	// Get avatar
-	avatar, err := c.FormFile("avatar")
-	if err != nil {
-		return err
-	}
-
-	// Source
-	src, err := avatar.Open()
-	if err != nil {
-		return err
-	}
-	defer src.Close()
-
-	// Destination
-	dst, err := os.Create(avatar.Filename)
-	if err != nil {
-		return err
-	}
-	defer dst.Close()
-
-	// Copy
-	if _, err = io.Copy(dst, src); err != nil {
-		return err
-	}
-
-	return c.HTML(http.StatusOK, "<b>Thank you! "+name+"</b>")
-}
-
-type User struct {
-	Name  string `json:"name" xml:"name" form:"name" query:"name"`
-	Email string `json:"email" xml:"email" form:"email" query:"email"`
 }
