@@ -3,7 +3,11 @@ module timtoronto634/go_web_framework_comparison/echo
 go 1.20
 
 require (
-	github.com/labstack/echo/v4 v4.11.1 // indirect
+	github.com/labstack/echo/v4 v4.11.1
+	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad
+)
+
+require (
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
