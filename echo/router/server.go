@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"io"
@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func server() *echo.Echo {
+func Server() *echo.Echo {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
