@@ -1,6 +1,11 @@
 package entity
 
+import (
+	"github.com/google/uuid"
+)
+
 type User struct {
-	Name  string `json:"name" xml:"name" form:"name" query:"name"`
-	Email string `json:"email" xml:"email" form:"email" query:"email"`
+	ID    uuid.UUID `json:"id"`
+	Name  string    `json:"name"`
+	Email string    `json:"email"`
 }
